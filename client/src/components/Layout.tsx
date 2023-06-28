@@ -36,7 +36,9 @@ export default function Layout({ children }: Props) {
             </Link>
           </div>
           <div className="flex gap-8 items-center">
-            <p className="font-bold text-rose-500 text-2xl">User</p>
+            <p className="font-bold text-neutral-100 text-2xl font-mono">
+              User
+            </p>
             <button className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600">
               Logout
             </button>

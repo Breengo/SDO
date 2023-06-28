@@ -8,6 +8,16 @@ export default function TaskCreation() {
   return (
     <Layout>
       <div className="flex flex-col items-center w-full">
+        <input
+          placeholder="Title"
+          type="text"
+          className="outline-none bg-neutral-600 rounded-md p-4 w-full text-2xl text-neutral-200"
+        />
+        <input
+          placeholder="Description"
+          type="text"
+          className="mt-8 outline-none bg-neutral-600 rounded-md p-4 w-full text-2xl text-neutral-200"
+        />
         {forms.map((_, index) => (
           <TaskForm index={index + 1} />
         ))}

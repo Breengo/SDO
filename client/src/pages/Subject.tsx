@@ -1,13 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import TaskBox from "../components/Subject/TaskBox";
+import TextBox from "../components/Subject/TextBox";
 
 export default function Subject() {
   const [add, setAdd] = React.useState(false);
 
   return (
     <Layout>
-      <div className="border-neutral-600 border-2 p-8 rounded-md">
+      <div className="border-neutral-600 border-2 p-8 rounded-md relative">
         <h1 className="text-5xl text-white uppercase">Subject</h1>
         <p className="text-neutral-200 mt-8 text-xl">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
@@ -23,14 +25,19 @@ export default function Subject() {
             Beloboka
           </p>
         </div>
+        <Link
+          className="absolute top-0 right-0 text-neutral-300 text-xl border-b border-l border-neutral-600 pr-4 pt-2 pb-2 pl-2 rounded-bl-md hover:bg-neutral-600 hover:text-neutral-100 transition-all"
+          to={`/subject/5/results`}
+        >
+          Results
+        </Link>
       </div>
 
       <TaskBox />
       <TaskBox />
-      <TaskBox />
-      <TaskBox />
-      <TaskBox />
-      <TaskBox />
+      <TextBox />
+      <TextBox />
+      <TextBox />
       <TaskBox />
       <TaskBox />
 
@@ -43,12 +50,18 @@ export default function Subject() {
         {!add && <p className="font-bold text-2xl p-8">Add</p>}
         {add && (
           <>
-            <p className="font-bold text-2xl flex items-center justify-center w-full text-center border-neutral-600 border-b p-8 cursor-pointer hover:bg-neutral-600 transition-all">
+            <Link
+              to={`/task/create/5`}
+              className="font-bold text-2xl flex items-center justify-center w-full text-center border-neutral-600 border-b p-8 cursor-pointer hover:bg-neutral-600 transition-all"
+            >
               Test
-            </p>
-            <p className="font-bold text-2xl flex items-center justify-center w-full text-center p-8 cursor-pointer hover:bg-neutral-600 transition-all">
+            </Link>
+            <Link
+              to={`/text/create/5`}
+              className="font-bold text-2xl flex items-center justify-center w-full text-center p-8 cursor-pointer hover:bg-neutral-600 transition-all"
+            >
               Text
-            </p>
+            </Link>
           </>
         )}
       </div>

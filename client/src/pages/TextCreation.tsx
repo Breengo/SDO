@@ -1,23 +1,16 @@
-import React from "react";
 import Layout from "../components/Layout";
 
-export default function SubjectCreation() {
+export default function TextCreation() {
   const descChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
     e.target.style.height = `${e.target.scrollHeight + 5}px`;
   };
-
   return (
     <Layout>
       <form className="flex flex-col items-center justify-center mt-96 w-full m-auto">
         <input
-          placeholder="Subject"
+          placeholder="Title"
           className="outline-none bg-neutral-600 rounded-md p-4 w-full text-center text-neutral-200 text-2xl shadow-md shadow-neutral-600"
-          type="text"
-        />
-        <input
-          placeholder="Groups"
-          className="mt-8 outline-none bg-neutral-600 rounded-md p-4 w-full text-center text-neutral-200 text-2xl shadow-md shadow-neutral-600"
           type="text"
         />
         <textarea
