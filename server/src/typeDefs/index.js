@@ -1,11 +1,11 @@
-const typeDefs = `type Book{
-    title:String
-    author:String
-}
+import userTDefs from "./userTDefs.js";
+import groupTDefs from "./groupTDefs.js";
+import subjectTDefs from "./subjectTDefs.js";
 
-type Query {
-    books:[Book]
-}
+const typeDefs = `
+${userTDefs}
+${groupTDefs}
+${subjectTDefs}
 `;
 
 export default typeDefs;

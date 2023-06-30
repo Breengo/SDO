@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import express from "express";
+import "dotenv/config.js";
 import cors from "cors";
 import { expressMiddleware } from "@apollo/server/express4";
 import sequelize from "./db.js";
@@ -23,7 +24,6 @@ const start = async () => {
 
     app.use(cors());
     app.use(express.json());
-
     app.use(express.urlencoded({ extended: true }));
     app.use("/graphql", expressMiddleware(server));
 
