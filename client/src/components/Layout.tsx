@@ -1,10 +1,21 @@
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { logout } from "../redux/slices/auth";
 
 type Props = {
   children: React.ReactNode;
 };
 
 export default function Layout({ children }: Props) {
+  const dispatch = useAppDispatch();
+
+  const userData = useAppSelector((state) => state.auth.userData);
+
+  const handleLogout = () => {
+    window.localStorage.removeItem("token");
+    dispatch(logout());
+  };
+
   return (
     <div className="bg-neutral-800 w-full min-h-screen flex justify-center pb-20 pt-40">
       <div className="w-1/2">
@@ -16,30 +27,37 @@ export default function Layout({ children }: Props) {
             >
               Home
             </Link>
-            <Link
-              to="/subject/create"
-              className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
-            >
-              Create subject
-            </Link>
-            <Link
-              to="/staff/create"
-              className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
-            >
-              Create staff
-            </Link>
-            <Link
-              to="/group/create"
-              className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
-            >
-              Add group
-            </Link>
+            {userData?.isStaff && (
+              <>
+                <Link
+                  to="/subject/create"
+                  className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
+                >
+                  Create subject
+                </Link>
+                <Link
+                  to="/staff/create"
+                  className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
+                >
+                  Create staff
+                </Link>
+                <Link
+                  to="/group/create"
+                  className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
+                >
+                  Add group
+                </Link>
+              </>
+            )}
           </div>
           <div className="flex gap-8 items-center">
             <p className="font-bold text-neutral-100 text-2xl font-mono">
-              User
+              {userData?.login}
             </p>
-            <button className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600">
+            <button
+              onClick={handleLogout}
+              className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
+            >
               Logout
             </button>
           </div>

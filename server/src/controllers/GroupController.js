@@ -6,7 +6,7 @@ class GroupController {
     return groups;
   }
   async createGroup(parent, args) {
-    const group = await Group.create(args.data);
+    const group = await Group.create({ title: args.title });
     return group;
   }
 }

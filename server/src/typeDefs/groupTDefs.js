@@ -7,12 +7,8 @@ type Query {
     groups:[Group]
 }
 
-input GroupData {
-    title:String
-}
-
 type Mutation{
-    createGroup(data: GroupData):Group
+    createGroup(title: String!):Group
 }
 `;
 

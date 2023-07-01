@@ -1,19 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
+import { useAppDispatch } from "../redux/store";
+import { login } from "../redux/slices/auth";
 
 const CREATE_USER = gql`
   mutation CreateUser($data: UserData) {
     createUser(data: $data) {
-      email
-      password
-      login
-      isStaff
+      user {
+        id
+        email
+        login
+        isStaff
+      }
+      token
     }
   }
 `;
 
 export default function Registration() {
+  const dispatch = useAppDispatch();
+
   const [unvalid, setUnvalid] = React.useState("");
   const [formData, setFormData] = React.useState({
     login: "",
@@ -35,7 +42,11 @@ export default function Registration() {
 
     createUserMutation({ variables: { data: { ...sendData, isStaff: false } } })
       .then((result) => {
-        console.log(result);
+        if (result.data && result.data.createUser) {
+          const data = result.data.createUser;
+          window.localStorage.setItem("token", data.token);
+          dispatch(login(data.user));
+        }
       })
       .catch((error) => {
         console.error(error);

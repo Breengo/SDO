@@ -5,7 +5,6 @@ import cors from "cors";
 import { expressMiddleware } from "@apollo/server/express4";
 import sequelize from "./db.js";
 import models from "./models/models.js";
-
 import typeDefs from "./typeDefs/index.js";
 import resolvers from "./resolvers/index.js";
 

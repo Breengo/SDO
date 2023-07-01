@@ -8,11 +8,28 @@ class UserController {
     return users;
   }
   async createUser(parent, args) {
-    console.log(args);
     const password = await bcrypt.hash(args.data.password, 6);
     args.data.password = password;
     const user = await User.create(args.data);
-    const token = jwt.sign();
+    const token = jwt.sign(user.dataValues, process.env.SECRET_KEY);
+    return { user: user.dataValues, token };
+  }
+
+  async loginUser(parent, args) {
+    const user = await User.findOne({ where: { login: args.login } });
+    if (!user) {
+      return "No such user";
+    }
+    const correctPass = bcrypt.compare(args.password, user.dataValues.password);
+    if (!correctPass) {
+      return "Incorrect password";
+    }
+    const token = jwt.sign(user.dataValues, process.env.SECRET_KEY);
+    return { user: user.dataValues, token };
+  }
+
+  async auth(parent, args) {
+    const user = jwt.decode(args.token);
     return user;
   }
 }

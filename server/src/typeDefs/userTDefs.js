@@ -17,9 +17,16 @@ input UserData {
     isStaff: Boolean
 }
 
-type Mutation{
-    createUser(data: UserData):User
-}
+type UserDataWithToken {
+    user: User
+    token: String
+  }
+  
+  type Mutation {
+    createUser(data: UserData): UserDataWithToken
+    login(login: String!, password: String!): UserDataWithToken
+    check(token:String!): User
+  }
 `;
 
 export default userTDefs;
