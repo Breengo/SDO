@@ -12,6 +12,7 @@ const CREATE_USER = gql`
         email
         login
         isStaff
+        group
       }
       token
     }

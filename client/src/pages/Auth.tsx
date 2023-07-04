@@ -12,6 +12,7 @@ const LOGIN = gql`
         email
         login
         isStaff
+        group
       }
       token
     }
@@ -35,9 +36,11 @@ export default function Auth() {
       variables: { login: formData.login, password: formData.password },
     })
       .then((result) => {
-        const data = result.data.login;
-        window.localStorage.setItem("token", data.token);
-        dispatch(login(data.user));
+        if (result.data.login.user.id) {
+          const data = result.data.login;
+          window.localStorage.setItem("token", data.token);
+          dispatch(login(data.user));
+        }
       })
       .catch((error) => {
         console.error(error);

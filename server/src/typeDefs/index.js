@@ -1,11 +1,13 @@
 import userTDefs from "./userTDefs.js";
-import groupTDefs from "./groupTDefs.js";
 import subjectTDefs from "./subjectTDefs.js";
+import textTDefs from "./textTDefs.js";
+import taskTDefs from "./taskTDefs.js";
 
 const typeDefs = `
 ${userTDefs}
-${groupTDefs}
 ${subjectTDefs}
+${textTDefs}
+${taskTDefs}
 `;
 
 export default typeDefs;

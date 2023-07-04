@@ -7,6 +7,8 @@ const subjectResolvers = {
   Mutation: {
     createSubject: (parent, args) =>
       SubjectController.createSubject(parent, args),
+    getSubjectById: (parent, args) =>
+      SubjectController.getSubjectById(parent, args),
   },
 };
 

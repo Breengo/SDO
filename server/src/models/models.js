@@ -7,36 +7,28 @@ const User = sequelize.define("user", {
   password: { type: DataTypes.STRING, allowNull: false },
   login: { type: DataTypes.STRING, unique: true, allowNull: false },
   isStaff: { type: DataTypes.BOOLEAN, allowNull: false },
-});
-
-const Group = sequelize.define("group", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  title: { type: DataTypes.STRING, unique: true, allowNull: false },
+  group: { type: DataTypes.STRING },
 });
 
 const Subject = sequelize.define("subject", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: { type: DataTypes.STRING, unique: true, allowNull: false },
-  description: { type: DataTypes.STRING },
+  description: { type: DataTypes.TEXT },
+  groups: { type: DataTypes.TEXT },
 });
 
 const Task = sequelize.define("task", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: { type: DataTypes.STRING, allowNull: false },
-  description: { type: DataTypes.STRING, allowNull: false },
-});
-
-const Question = sequelize.define("question", {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  text: { type: DataTypes.STRING, allowNull: false },
-  options: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
-  rightAnswer: { type: DataTypes.INTEGER },
+  description: { type: DataTypes.TEXT, allowNull: false },
+  questions: { type: DataTypes.ARRAY(DataTypes.TEXT) },
 });
 
 const Text = sequelize.define("text", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   title: { type: DataTypes.STRING, allowNull: false },
-  content: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.STRING },
+  content: { type: DataTypes.TEXT, allowNull: false },
 });
 
 const Result = sequelize.define("result", {
@@ -44,17 +36,11 @@ const Result = sequelize.define("result", {
   value: { type: DataTypes.INTEGER, allowNull: false },
 });
 
-Group.hasMany(User);
-User.belongsTo(Group);
-
 User.hasMany(Subject);
 Subject.belongsTo(User);
 
 Subject.hasMany(Task);
 Task.belongsTo(Subject);
-
-Task.hasMany(Question);
-Question.belongsTo(Task);
 
 Subject.hasMany(Text);
 Text.belongsTo(Subject);
@@ -65,5 +51,5 @@ Result.belongsTo(Subject);
 User.hasMany(Result);
 Result.belongsTo(User);
 
-export { User, Group, Subject, Task, Question, Text, Result };
-export default { User, Group, Subject, Task, Question, Text, Result };
+export { User, Subject, Task, Text, Result };
+export default { User, Subject, Task, Text, Result };

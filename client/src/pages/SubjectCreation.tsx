@@ -22,18 +22,19 @@ export default function SubjectCreation() {
 
   const userId = useAppSelector((state) => state.auth.userData?.id);
 
-  const [createUserMutation] = useMutation(CREATE_SUBJECT);
+  const [createSubjectMutation] = useMutation(CREATE_SUBJECT);
 
   const [formData, setFormData] = React.useState({
     title: "",
     description: "",
+    groups: "",
   });
 
   const [msg, setMsg] = React.useState("");
 
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
-    createUserMutation({
+    createSubjectMutation({
       variables: { data: { ...formData, userId } },
     })
       .then((result) => {
@@ -55,6 +56,10 @@ export default function SubjectCreation() {
           type="text"
         />
         <input
+          value={formData.groups}
+          onChange={(e) => {
+            setFormData({ ...formData, groups: e.target.value });
+          }}
           placeholder="Groups"
           className="mt-8 outline-none bg-neutral-600 rounded-md p-4 w-full text-center text-neutral-200 text-2xl shadow-md shadow-neutral-600"
           type="text"

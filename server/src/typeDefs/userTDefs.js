@@ -4,6 +4,7 @@ const userTDefs = `type User{
     password:String
     login:String
     isStaff: Boolean
+    group:String
 }
 
 type Query {
@@ -15,6 +16,7 @@ input UserData {
     password: String
     login: String
     isStaff: Boolean
+    group:String
 }
 
 type UserDataWithToken {
@@ -24,6 +26,7 @@ type UserDataWithToken {
   
   type Mutation {
     createUser(data: UserData): UserDataWithToken
+    setGroup(group:String!,uid:Int!): String!
     login(login: String!, password: String!): UserDataWithToken
     check(token:String!): User
   }

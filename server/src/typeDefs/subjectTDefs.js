@@ -3,6 +3,7 @@ const subjectTDefs = `type Subject{
     title:String
     description:String
     userId:Int
+    groups:String
 }
 
 type Query {
@@ -13,6 +14,7 @@ input SubjectData {
     title:String
     description:String
     userId:Int
+    groups:String
 }
 
 type User{
@@ -26,6 +28,7 @@ type User{
 type ExtSubject {
     id:Int
     title:String
+    groups:String
     description:String
     userId:Int
     email:String
@@ -36,6 +39,7 @@ type ExtSubject {
 
 type Mutation{
     createSubject(data: SubjectData):Subject
+    getSubjectById(id:Int!):ExtSubject
 }
 `;
 

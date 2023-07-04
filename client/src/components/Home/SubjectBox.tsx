@@ -8,7 +8,7 @@ type Props = {
 export default function SubjectBox({ data }: Props) {
   return (
     <Link
-      to={`/subject/5`}
+      to={`/subject/${data.id}`}
       className="flex flex-col text-neutral-300 text-3xl p-8 border-neutral-600 shadow-md shadow-neutral-600 border rounded-md mt-8 cursor-pointer hover:bg-neutral-600 transition-all"
     >
       <p className="font-bold">{data.title}</p>

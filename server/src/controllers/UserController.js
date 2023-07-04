@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 class UserController {
   async getUsers() {
-    const users = await User.findAll();
+    const users = await User.findAll({ order: [["login", "ASC"]] });
     return users;
   }
   async createUser(parent, args) {
@@ -15,12 +15,24 @@ class UserController {
     return { user: user.dataValues, token };
   }
 
+  async setGroup(parent, args) {
+    const user = await User.update(
+      { group: args.group },
+      { where: { id: args.uid } }
+    );
+    return `Set group to ${args.group}`;
+  }
+
   async loginUser(parent, args) {
     const user = await User.findOne({ where: { login: args.login } });
     if (!user) {
       return "No such user";
     }
-    const correctPass = bcrypt.compare(args.password, user.dataValues.password);
+    const correctPass = await bcrypt.compare(
+      args.password,
+      user.dataValues.password
+    );
+
     if (!correctPass) {
       return "Incorrect password";
     }

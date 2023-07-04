@@ -5,6 +5,7 @@ type UserData = {
   login: string;
   email: string;
   isStaff: boolean;
+  group: String | null;
 };
 
 type AuthState = {

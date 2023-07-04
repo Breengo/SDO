@@ -6,6 +6,7 @@ const userResolvers = {
   },
   Mutation: {
     createUser: (parent, args) => UserController.createUser(parent, args),
+    setGroup: (parent, args) => UserController.setGroup(parent, args),
     login: (parent, args) => UserController.loginUser(parent, args),
     check: (parent, args) => UserController.auth(parent, args),
   },

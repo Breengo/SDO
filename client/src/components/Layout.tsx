@@ -42,10 +42,10 @@ export default function Layout({ children }: Props) {
                   Create staff
                 </Link>
                 <Link
-                  to="/group/create"
+                  to="/users/groups"
                   className="border-2 border-neutral-600 p-2 rounded-md hover:bg-neutral-600 transition-all hover:text-neutral-100 shadow-md shadow-neutral-600"
                 >
-                  Add group
+                  Users groups
                 </Link>
               </>
             )}

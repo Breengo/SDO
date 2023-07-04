@@ -4,7 +4,6 @@ import Auth from "./pages/Auth";
 import Registration from "./pages/Registration";
 import Home from "./pages/Home";
 import Subject from "./pages/Subject";
-import GroupCreation from "./pages/GroupCreation";
 import StaffCreation from "./pages/StaffCreation";
 import SubjectCreation from "./pages/SubjectCreation";
 import TaskCreation from "./pages/TaskCreation";
@@ -16,6 +15,7 @@ import ProtectedRoute from "./utils/ProtectedRouter";
 import { useAppDispatch, useAppSelector } from "./redux/store";
 import { gql, useMutation } from "@apollo/client";
 import { login } from "./redux/slices/auth";
+import UserGroup from "./pages/UsersGroups";
 
 const AUTH = gql`
   mutation Check($token: String!) {
@@ -24,6 +24,7 @@ const AUTH = gql`
       email
       login
       isStaff
+      group
     }
   }
 `;
@@ -79,10 +80,10 @@ function App() {
             <Route path="/subject/:sid/results" element={<SubjectResults />} />
 
             <Route path="/subject/create" element={<SubjectCreation />} />
-            <Route path="/group/create" element={<GroupCreation />} />
             <Route path="/staff/create" element={<StaffCreation />} />
             <Route path="/task/create/:sid" element={<TaskCreation />} />
             <Route path="/text/create/:sid" element={<TextCreation />} />
+            <Route path="/users/groups" element={<UserGroup />} />
           </Route>
         </Route>
       </Routes>
