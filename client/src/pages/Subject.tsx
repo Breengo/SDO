@@ -7,6 +7,7 @@ import { gql, useMutation } from "@apollo/client";
 import { SubjectData } from "./Home";
 import Loading from "../components/Loaging";
 import { QuestionsData } from "../components/TaskForm";
+import { useAppSelector } from "../redux/store";
 
 export type TextData = {
   description: string;
@@ -21,6 +22,7 @@ export type TaskData = {
   questions: QuestionsData[] | string;
   title: string;
   subjectId: number;
+  result: number | null;
 };
 
 const GET_SUBJECT_DATA = gql`
@@ -48,13 +50,14 @@ const GET_TEXTS = gql`
 `;
 
 const GET_TASKS = gql`
-  mutation GetSubjectTasks($subjectId: Int) {
-    getSubjectTasks(subjectId: $subjectId) {
+  mutation Mutation($subjectId: Int, $userId: Int) {
+    getSubjectTasks(subjectId: $subjectId, userId: $userId) {
       description
       id
       questions
-      title
       subjectId
+      title
+      result
     }
   }
 `;
@@ -66,6 +69,7 @@ export default function Subject() {
   const [tasks, setTasks] = React.useState<TaskData[]>();
   const [loading, setLoading] = React.useState(true);
   const sid = useParams().sid;
+  const userData = useAppSelector((state) => state.auth.userData);
 
   const [getSubjectDataMutation] = useMutation(GET_SUBJECT_DATA);
   const [getTextsMutation] = useMutation(GET_TEXTS);
@@ -90,7 +94,9 @@ export default function Subject() {
         console.error(error);
       });
 
-    getTasksMutation({ variables: { subjectId: Number(sid) } })
+    getTasksMutation({
+      variables: { subjectId: Number(sid), userId: userData?.id },
+    })
       .then((result) => {
         setTasks(
           result.data.getSubjectTasks.map((task: TaskData) => {
@@ -128,31 +134,32 @@ export default function Subject() {
 
       {texts && texts.map((text) => <TextBox textData={text} key={text.id} />)}
       {tasks && tasks.map((task) => <TaskBox data={task} key={task.id} />)}
-
-      <div
-        onClick={() => (add ? "" : setAdd(true))}
-        className={`flex flex-col items-center justify-center w-full border border-neutral-600 rounded-md mt-8 text-white text-xl transition-all ${
-          add ? "" : "cursor-pointer hover:bg-neutral-600"
-        }`}
-      >
-        {!add && <p className="font-bold text-2xl p-8">Add</p>}
-        {add && (
-          <>
-            <Link
-              to={`/task/create/${sid}`}
-              className="font-bold text-2xl flex items-center justify-center w-full text-center border-neutral-600 border-b p-8 cursor-pointer hover:bg-neutral-600 transition-all"
-            >
-              Test
-            </Link>
-            <Link
-              to={`/text/create/${sid}`}
-              className="font-bold text-2xl flex items-center justify-center w-full text-center p-8 cursor-pointer hover:bg-neutral-600 transition-all"
-            >
-              Text
-            </Link>
-          </>
-        )}
-      </div>
+      {userData?.isStaff && (
+        <div
+          onClick={() => (add ? "" : setAdd(true))}
+          className={`flex flex-col items-center justify-center w-full border border-neutral-600 rounded-md mt-8 text-white text-xl transition-all ${
+            add ? "" : "cursor-pointer hover:bg-neutral-600"
+          }`}
+        >
+          {!add && <p className="font-bold text-2xl p-8">Add</p>}
+          {add && (
+            <>
+              <Link
+                to={`/task/create/${sid}`}
+                className="font-bold text-2xl flex items-center justify-center w-full text-center border-neutral-600 border-b p-8 cursor-pointer hover:bg-neutral-600 transition-all"
+              >
+                Test
+              </Link>
+              <Link
+                to={`/text/create/${sid}`}
+                className="font-bold text-2xl flex items-center justify-center w-full text-center p-8 cursor-pointer hover:bg-neutral-600 transition-all"
+              >
+                Text
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </Layout>
   );
 }

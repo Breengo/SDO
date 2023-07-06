@@ -1,4 +1,5 @@
-import { Task } from "../models/models.js";
+import { Op } from "sequelize";
+import { Task, Result } from "../models/models.js";
 
 class TaskController {
   async createTask(parent, args) {
@@ -9,7 +10,18 @@ class TaskController {
 
   async getSubjectTasks(parent, args) {
     let tasks = await Task.findAll({ where: { subjectId: args.subjectId } });
-    return tasks;
+    const extTasks = [];
+
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i].dataValues;
+      const result = await Result.findOne({
+        where: { [Op.and]: [{ taskId: task.id }, { userId: args.userId }] },
+      });
+
+      extTasks.push({ ...task, result: result && result.value });
+    }
+
+    return extTasks;
   }
 
   async getTaskById(parent, args) {

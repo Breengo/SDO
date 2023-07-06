@@ -5,6 +5,7 @@ type Task{
     description:String!
     subjectId:Int
     questions:[String]!
+    result:Int
 }
 
 input TaskData {
@@ -16,7 +17,7 @@ input TaskData {
   
   type Mutation {
     createTask(data: TaskData): Task
-    getSubjectTasks(subjectId:Int):[Task]
+    getSubjectTasks(subjectId:Int,userId:Int):[Task]
     getTaskById(taskId:Int):Task
   }
 `;
