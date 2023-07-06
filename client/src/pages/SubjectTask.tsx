@@ -1,35 +1,111 @@
+import React from "react";
+import { gql, useMutation } from "@apollo/client";
 import Layout from "../components/Layout";
 import QuestionBox from "../components/Subject/QuestionBox";
+import { useNavigate, useParams } from "react-router-dom";
+import { TaskData } from "./Subject";
+import { useAppSelector } from "../redux/store";
+
+const GET_TASK = gql`
+  mutation GetTaskById($taskId: Int) {
+    getTaskById(taskId: $taskId) {
+      description
+      id
+      questions
+      subjectId
+      title
+    }
+  }
+`;
+
+const CREATE_RESULT = gql`
+  mutation Mutation($data: ResultData) {
+    createResult(data: $data) {
+      id
+      taskId
+      userId
+      value
+    }
+  }
+`;
+
+const GET_USER_RESULT = gql`
+  mutation Mutation($userId: Int, $taskId: Int) {
+    getTaskUserResult(userId: $userId, taskId: $taskId) {
+      taskId
+      id
+      userId
+      value
+    }
+  }
+`;
 
 export default function SubjectTask() {
+  const navigate = useNavigate();
+  const sid = useParams().sid;
+  const taskId = Number(useParams().tid);
+  const [getTaskMutation] = useMutation(GET_TASK);
+  const [createTaskMutation] = useMutation(CREATE_RESULT);
+  const [getUserResult] = useMutation(GET_USER_RESULT);
+
+  const userId = useAppSelector((state) => state.auth.userData?.id);
+
+  const [points, setPoints] = React.useState([0]);
+  const [taskData, setTaskData] = React.useState<TaskData>();
+
+  React.useEffect(() => {
+    getUserResult({ variables: { userId, taskId } })
+      .then((res) =>
+        res.data.getTaskUserResult ? navigate(`/subject/${sid}`) : ""
+      )
+      .catch();
+    getTaskMutation({ variables: { taskId } })
+      .then((res) =>
+        setTaskData({
+          ...res.data.getTaskById,
+          questions: JSON.parse(res.data.getTaskById.questions),
+        })
+      )
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleTestEnd = () => {
+    if (taskData) {
+      const value =
+        (points.reduce((prev, acc) => acc + prev) /
+          taskData?.questions.length) *
+        100;
+
+      createTaskMutation({ variables: { data: { taskId, userId, value } } })
+        .then((res) => window.location.reload())
+        .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <Layout>
       <div>
-        <h2 className="text-5xl font-bold text-neutral-200">Title</h2>
+        <h2 className="text-5xl font-bold text-neutral-200">
+          {taskData?.title}
+        </h2>
         <p className="mt-8 mb-8 text-2xl text-neutral-400">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum
-          asperiores magni quae, quia suscipit modi sequi velit voluptates quos,
-          architecto quis, maxime ut quod voluptate dignissimos pariatur
-          incidunt veniam dolorum impedit? Nostrum similique est, eos atque
-          molestias necessitatibus quas quia harum quaerat animi doloremque,
-          porro architecto reprehenderit voluptatum nihil. Laborum voluptatibus
-          omnis ipsam totam molestias perspiciatis voluptatum impedit dolores,
-          soluta provident quis hic quod quaerat! Nam iusto a, sed laudantium
-          corporis qui beatae voluptate magni. Cum eligendi numquam autem ex,
-          ipsa ullam iure dolore natus explicabo aut asperiores. Fugiat itaque
-          dolores dolorum nobis ea! Nesciunt porro ea tenetur itaque aliquid
-          eligendi odio illum dolorem quasi ullam repellendus cupiditate beatae,
-          nobis asperiores perferendis iure vitae vero suscipit amet et incidunt
-          non.
+          {taskData?.description}
         </p>
-        <QuestionBox />
-        <QuestionBox />
-        <QuestionBox />
-        <QuestionBox />
-        <QuestionBox />
-        <QuestionBox />
-        <QuestionBox />
-        <button className="w-full mt-8 rounded-md border border-neutral-600 p-4 text-neutral-300 hover:text-neutral-100 hover:bg-neutral-600 transition-all">
+        {typeof taskData?.questions !== "string" &&
+          taskData?.questions.map((question, index) => (
+            <QuestionBox
+              index={index}
+              points={[...points]}
+              setPoints={setPoints}
+              data={question}
+              key={index}
+            />
+          ))}
+
+        <button
+          onClick={handleTestEnd}
+          className="w-full mt-8 rounded-md border border-neutral-600 p-4 text-neutral-300 hover:text-neutral-100 hover:bg-neutral-600 transition-all"
+        >
           End test
         </button>
       </div>

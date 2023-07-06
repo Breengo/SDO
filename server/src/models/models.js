@@ -45,8 +45,8 @@ Task.belongsTo(Subject);
 Subject.hasMany(Text);
 Text.belongsTo(Subject);
 
-Subject.hasMany(Result);
-Result.belongsTo(Subject);
+Task.hasMany(Result);
+Result.belongsTo(Task);
 
 User.hasMany(Result);
 Result.belongsTo(User);

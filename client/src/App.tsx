@@ -77,7 +77,10 @@ function App() {
             <Route path="/subject/:sid/task/:tid" element={<SubjectTask />} />
             <Route path="/subject/:sid/text/:tid" element={<SubjectText />} />
 
-            <Route path="/subject/:sid/results" element={<SubjectResults />} />
+            <Route
+              path="/subject/:sid/task/:tid/results"
+              element={<SubjectResults />}
+            />
 
             <Route path="/subject/create" element={<SubjectCreation />} />
             <Route path="/staff/create" element={<StaffCreation />} />

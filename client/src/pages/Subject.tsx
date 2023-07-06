@@ -18,7 +18,7 @@ export type TextData = {
 export type TaskData = {
   description: string;
   id: number;
-  questions: QuestionsData | string;
+  questions: QuestionsData[] | string;
   title: string;
   subjectId: number;
 };
@@ -124,12 +124,6 @@ export default function Subject() {
             {subjectData?.login}
           </p>
         </div>
-        <Link
-          className="absolute top-0 right-0 text-neutral-300 text-xl border-b border-l border-neutral-600 pr-4 pt-2 pb-2 pl-2 rounded-bl-md hover:bg-neutral-600 hover:text-neutral-100 transition-all"
-          to={`/subject/${sid}/results`}
-        >
-          Results
-        </Link>
       </div>
 
       {texts && texts.map((text) => <TextBox textData={text} key={text.id} />)}

@@ -1,18 +1,29 @@
 import React from "react";
+import { QuestionsData } from "../TaskForm";
 
-export default function QuestionBox() {
+type Props = {
+  data: QuestionsData;
+  setPoints: (points: number[]) => void;
+  points: number[];
+  index: number;
+};
+
+export default function QuestionBox({ data, setPoints, points, index }: Props) {
   const [choiced, setChoiced] = React.useState(10);
+
+  React.useEffect(() => {
+    if (choiced + 1 === data.rightAns) {
+      points[index] = 1;
+      setPoints(points);
+    } else {
+      points[index] = 0;
+      setPoints(points);
+    }
+  }, [choiced]);
 
   return (
     <div className="w-full border-neutral-600 border mt-8 p-8 rounded-md">
-      <p className="text-2xl text-neutral-300 ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-        illo, tempora reprehenderit sit eius sed harum nam eos modi rem iure
-        asperiores, eligendi deleniti numquam perspiciatis. Minima sequi magni,
-        quibusdam illum sit ad tempora officiis quaerat sunt quam ab assumenda
-        itaque hic doloribus libero rerum exercitationem ratione eum fugiat
-        asperiores.
-      </p>
+      <p className="text-2xl text-neutral-300 ">{data.text}</p>
       <div className="flex flex-col justify-around items-center mt-4">
         {[1, 2, 3, 4].map((item, index) => (
           <button
@@ -23,7 +34,7 @@ export default function QuestionBox() {
                 : "hover:bg-neutral-600 hover:text-neutral-100 transition-all"
             }`}
             key={index}
-          >{`option ${item}`}</button>
+          >{`${data.options[index]}`}</button>
         ))}
       </div>
     </div>
